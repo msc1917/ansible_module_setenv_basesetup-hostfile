@@ -1,0 +1,38 @@
+---
+- name: Generiere /etc/hosts-file - default
+  template:
+    src:   hosts.j2
+    dest:  /etc/hosts
+    owner: root
+    group: root
+    mode:  0644
+  become: yes
+  when: 
+    - serveNet_ip is not defined
+    - hostfile.create
+    - not hostfile.full
+
+- name: Generiere /etc/hosts-file - all Ansible-hosts
+  template:
+    src:   hosts-all.j2
+    dest:  /etc/hosts
+    owner: root
+    group: root
+    mode:  0644
+  become: yes
+  when: 
+    - serveNet_ip is not defined
+    - hostfile.create
+    - hostfile.full
+
+- name: Generiere /etc/hosts-file - serveNet
+  template:
+    src:   hosts-serveNet.j2
+    dest:  /etc/hosts
+    owner: root
+    group: root
+    mode:  0644
+  become: yes
+  when: 
+    - serveNet_ip is defined
+    - hostfile.create
